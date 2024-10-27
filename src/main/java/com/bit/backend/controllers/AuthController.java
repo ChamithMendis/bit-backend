@@ -1,16 +1,13 @@
 package com.bit.backend.controllers;
 
 import com.bit.backend.config.UserAuthProvider;
-import com.bit.backend.dtos.CredentialsDto;
-import com.bit.backend.dtos.SignUpDto;
-import com.bit.backend.dtos.UserDto;
+import com.bit.backend.dtos.*;
 import com.bit.backend.services.UserServiceI;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 public class AuthController {
@@ -36,4 +33,21 @@ public class AuthController {
         user.setToken(userAuthProvider.createToken(user));
         return ResponseEntity.created(URI.create("/users/" + user.getId())).body(user);
     }
+
+    @GetMapping("/get-auth-ids/{id}")
+    public ResponseEntity<List<Integer>> getAuthDetails(@PathVariable long id) {
+        List<Integer> authIds = userServiceI.getAuthIds(id);
+        return ResponseEntity.ok(authIds);
+    }
+
+    @GetMapping("/system-privileges")
+    public ResponseEntity<SystemPrivilegeListDto> getAuthDetails() {
+        SystemPrivilegeListDto systemPrivilegeListDto = userServiceI.getSystemPrivileges();
+        return ResponseEntity.ok(systemPrivilegeListDto);
+    }
+
+//    @PostMapping("/system-privileges")
+//    public ResponseEntity<List<Integer>> saveSystemPrivileges(@RequestBody SystemPrivilegeListDto systemPrivilegeListDto) {
+//        return ResponseEntity.ok(userServiceI.setSystemPrivileges(systemPrivilegeListDto));
+//    }
 }

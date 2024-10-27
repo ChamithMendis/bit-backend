@@ -1,19 +1,21 @@
 package com.bit.backend.services.impl;
 
-import com.bit.backend.dtos.CredentialsDto;
-import com.bit.backend.dtos.SignUpDto;
-import com.bit.backend.dtos.UserDto;
+import com.bit.backend.dtos.*;
 import com.bit.backend.entities.User;
 import com.bit.backend.exceptions.AppException;
 import com.bit.backend.mappers.UserMapper;
 import com.bit.backend.repositories.UserRepository;
 import com.bit.backend.services.UserServiceI;
+import jakarta.persistence.Tuple;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserServiceI {
@@ -50,5 +52,45 @@ public class UserService implements UserServiceI {
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDto.password())));
         User savedUser = userRepository.save(user);
         return userMapper.toUserDto(savedUser);
+    }
+
+    @Override
+    public List<Integer> getAuthIds(long userId) {
+        Optional<List<Integer>> optionalAuthIdLists = userRepository.findAuthIdsByUserId(userId);
+        List<Integer> authIdLists = optionalAuthIdLists.get();
+
+        return authIdLists;
+    }
+
+    @Override
+    public SystemPrivilegeListDto getSystemPrivileges() {
+        List<Tuple> tupleAvailableSystemPrivilegeLists = userRepository.getAvailableSystemPrivileges();
+        List<Tuple> tupleAssignedSystemPrivilegeLists = userRepository.getAssignedSystemPrivileges();
+        SystemPrivilegeListDto systemPrivilegeListDto = new SystemPrivilegeListDto();
+
+        List<SystemPrivilegeDto> availableSystemPrivilegeLists = tupleAvailableSystemPrivilegeLists.stream().map(t -> {
+            SystemPrivilegeDto systemPrivilegeDto = new SystemPrivilegeDto();
+            systemPrivilegeDto.setId(t.get(0, Integer.class));
+            systemPrivilegeDto.setDescription(t.get(1, String.class));
+            return systemPrivilegeDto;
+        }).collect(Collectors.toList());
+
+        List<SystemPrivilegeDto> assignSystemPrivilegeLists = tupleAssignedSystemPrivilegeLists.stream().map(t -> {
+            SystemPrivilegeDto systemPrivilegeDto = new SystemPrivilegeDto();
+            systemPrivilegeDto.setId(t.get(0, Integer.class));
+            systemPrivilegeDto.setDescription(t.get(1, String.class));
+            return systemPrivilegeDto;
+        }).collect(Collectors.toList());
+
+        systemPrivilegeListDto.setSourcePrivileges(availableSystemPrivilegeLists);
+        systemPrivilegeListDto.setTargetPrivileges(assignSystemPrivilegeLists);
+
+        return systemPrivilegeListDto;
+    }
+
+    @Override
+    public List<Integer> setSystemPrivileges(SystemPrivilegeListDto systemPrivilegeListDto) {
+
+        return null;
     }
 }
