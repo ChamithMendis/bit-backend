@@ -36,4 +36,22 @@ public class CommonServiceController {
         CommonDataListDto savedData = commonDataServiceI.saveData(id, commonDataListDto);
         return savedData;
     }
+
+    @GetMapping("/group-available-users/{id}")
+    public List<CommonDataDto> getAvailableUsersByGroupID(@PathVariable int id) {
+        List<CommonDataDto> availablePrivileges = commonDataServiceI.getAvailableUsersByGroupID(id);
+        return availablePrivileges;
+    }
+
+    @GetMapping("/group-assigned-users/{id}")
+    public List<CommonDataDto> getAssignedUsersByGroupID(@PathVariable int id) {
+        List<CommonDataDto> availablePrivileges = commonDataServiceI.getAssignedUsersByGroupID(id);
+        return availablePrivileges;
+    }
+
+    @PostMapping("/privilege-group-users/{id}")
+    public CommonDataListDto saveGroupUserData(@RequestBody CommonDataListDto commonDataListDto, @PathVariable int id) {
+        CommonDataListDto savedData = commonDataServiceI.saveGroupUserData(id, commonDataListDto);
+        return savedData;
+    }
 }

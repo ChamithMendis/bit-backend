@@ -13,4 +13,10 @@ public interface CommonDataRepository extends JpaRepository<CommonDataEntity, Lo
 
     @Query(nativeQuery = true, value = "SELECT auth_id as id, description FROM get_assigned_auths WHERE group_id = :groupId")
     List<CommonDataEntity> getAssignedPrivilegesByGroupId(int groupId);
+
+    @Query(nativeQuery = true, value = "SELECT id, description FROM get_auth_group_user_details WHERE auth_group_id != :groupId OR auth_group_id is null")
+    List<CommonDataEntity> getAvailableUsersByGroupID(int groupId);
+
+    @Query(nativeQuery = true, value = "SELECT id, description FROM get_auth_group_user_details WHERE auth_group_id = :groupId")
+    List<CommonDataEntity> getAssignedUsersByGroupId(int groupId);
 }

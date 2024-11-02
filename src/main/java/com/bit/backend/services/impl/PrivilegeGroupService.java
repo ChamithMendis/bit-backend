@@ -32,9 +32,10 @@ public class PrivilegeGroupService implements PrivilegeGroupServiceI {
 
     @Override
     public PrivilegeGroupDto addPrivilegeGroup(PrivilegeGroupDto privilegeGroupDto) {
-        Optional<PrivilegeGroup> oPrivilegeGroup = privilegeGroupRepository.findByGroupName(privilegeGroupDto.getGroupName());
+        Optional<List<PrivilegeGroup>> oPrivilegeGroups = privilegeGroupRepository.findByGroupName(privilegeGroupDto.getGroupName().trim());
+        List<PrivilegeGroup> privilegeGroups = oPrivilegeGroups.get();
 
-        if (oPrivilegeGroup.isPresent()) {
+        if (privilegeGroups.size() > 0) {
             throw new AppException("Privilege Group Already Exists", HttpStatus.BAD_REQUEST);
         }
         privilegeGroupDto.setStatus(1);
@@ -51,9 +52,10 @@ public class PrivilegeGroupService implements PrivilegeGroupServiceI {
             throw new AppException("Privilege Group Not Exists", HttpStatus.BAD_REQUEST);
         }
 
-        Optional<PrivilegeGroup> optionalPrivilegeGroup = privilegeGroupRepository.findByGroupName(privilegeGroupDto.getGroupName());
+        Optional<List<PrivilegeGroup>> oPrivilegeGroups = privilegeGroupRepository.findByIdAndName(id,  privilegeGroupDto.getGroupName());
+        List<PrivilegeGroup> oldPrivilegeGroups = oPrivilegeGroups.get();
 
-        if (optionalPrivilegeGroup.isPresent()) {
+        if (oldPrivilegeGroups.size() > 0) {
             throw new AppException("Privilege Group With Same Name Exists!", HttpStatus.BAD_REQUEST);
         }
 
