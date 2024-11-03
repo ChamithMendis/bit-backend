@@ -17,4 +17,6 @@ public interface PrivilegeGroupRepository extends JpaRepository<PrivilegeGroup, 
     List<PrivilegeGroup> getActivePrivilageGroups();
     @Query(nativeQuery = true, value = "SELECT * FROM auth_groups WHERE id != :id AND group_name = :name")
     Optional<List<PrivilegeGroup>> findByIdAndName(@Param("id") long id, @Param("name") String name);
+    @Query(nativeQuery = true, value = "SELECT * FROM auth_groups WHERE group_name = :name and  status = 1")
+    Optional<List<PrivilegeGroup>> findByGroupNameAndStatus( @Param("name") String name);
 }

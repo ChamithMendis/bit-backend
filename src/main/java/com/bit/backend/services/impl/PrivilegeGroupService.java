@@ -32,7 +32,7 @@ public class PrivilegeGroupService implements PrivilegeGroupServiceI {
 
     @Override
     public PrivilegeGroupDto addPrivilegeGroup(PrivilegeGroupDto privilegeGroupDto) {
-        Optional<List<PrivilegeGroup>> oPrivilegeGroups = privilegeGroupRepository.findByGroupName(privilegeGroupDto.getGroupName().trim());
+        Optional<List<PrivilegeGroup>> oPrivilegeGroups = privilegeGroupRepository.findByGroupNameAndStatus(privilegeGroupDto.getGroupName().trim());
         List<PrivilegeGroup> privilegeGroups = oPrivilegeGroups.get();
 
         if (privilegeGroups.size() > 0) {
