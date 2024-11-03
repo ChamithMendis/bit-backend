@@ -3,10 +3,12 @@ package com.bit.backend.controllers;
 import com.bit.backend.config.UserAuthProvider;
 import com.bit.backend.dtos.*;
 import com.bit.backend.services.UserServiceI;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,8 +38,13 @@ public class AuthController {
 
     @GetMapping("/get-auth-ids/{id}")
     public ResponseEntity<List<Integer>> getAuthDetails(@PathVariable long id) {
-        List<Integer> authIds = userServiceI.getAuthIds(id);
-        return ResponseEntity.ok(authIds);
+        try {
+            List<Integer> authIds = userServiceI.getAuthIds(id);
+            return ResponseEntity.status(HttpStatus.OK).body(authIds);
+        } catch (Exception e) {
+            List<Integer> returnList = new ArrayList<>();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(returnList);
+        }
     }
 
     @GetMapping("/system-privileges")
