@@ -5,10 +5,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 
 public class JwtAuthFilter extends OncePerRequestFilter {
 
@@ -31,6 +33,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if (authElements.length == 2
                     && "Bearer".equals(authElements[0])) {
                 try {
+
+                    // extract login
+//                    if (userDto.getLogin() != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+//                        return new UsernamePasswordAuthenticationToken(userDto, null, Collections.emptyList());
+//                    }
+
                     if ("GET".equals(request.getMethod())) {
                         SecurityContextHolder.getContext().setAuthentication(
                                 userAuthProvider.validateToken(authElements[1]));

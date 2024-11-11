@@ -10,8 +10,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-@Configuration
-@EnableWebSecurity
+@Configuration // saying spring that this is a configuration class
+@EnableWebSecurity // saying spring to use this configuration instead of default security configs
 public class SecurityConfig {
 
     private final UserAuthProvider userAuthProvider;
@@ -21,10 +21,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { // can give any method name
+        http.csrf(AbstractHttpConfigurer::disable) // method referencing, disabling csrf
                 .addFilterBefore(new JwtAuthFilter(userAuthProvider), BasicAuthenticationFilter.class)
-                .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // to handle csrf so you don't have to worry about session id
                 .authorizeHttpRequests((request) ->
                         request.requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
                         .anyRequest().authenticated()
