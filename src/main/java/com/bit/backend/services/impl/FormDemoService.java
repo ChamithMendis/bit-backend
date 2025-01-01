@@ -25,6 +25,10 @@ public class FormDemoService implements FormDemoServiceI {
     public FormDemoDto addFormDemoEntity(FormDemoDto formDemoDto) {
         System.out.println("****************Inside Service****************");
         FormDemoEntity formDemoEntity = formDemoMapper.toFormDemoEntity(formDemoDto);
+
+        formDemoEntity.setChecked(formDemoDto.getCheck().get(0));
+        formDemoEntity.setInderteminate(formDemoDto.getCheck().get(1));
+
         FormDemoEntity savedFormdemoEntity = formDemoRepository.save(formDemoEntity);
         return formDemoMapper.toFormDemoDto(savedFormdemoEntity);
     }

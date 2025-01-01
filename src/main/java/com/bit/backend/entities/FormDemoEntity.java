@@ -2,6 +2,9 @@ package com.bit.backend.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+import java.util.List;
+
 @Entity
 @Table(name = "form_demo")
 public class FormDemoEntity {
@@ -22,14 +25,34 @@ public class FormDemoEntity {
     @Column(name = "age")
     private int age;
 
+    @Column(name = "gender")
+    private String gender;
+
+    @Column(name = "food")
+    private String food;
+
+    @Column(name = "dob")
+    private Date dob;
+
+    @Column(name = "checked")
+    private boolean checked;
+
+    @Column(name = "inderteminate")
+    private boolean inderteminate;
+
     public FormDemoEntity() {}
 
-    public FormDemoEntity(Long id, String firstName, String lastName, String email, int age) {
+    public FormDemoEntity(Long id, String firstName, String lastName, String email, int age, String gender, String food, Date dob, List<Boolean> check) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.age = age;
+        this.gender = gender;
+        this.food = food;
+        this.dob = dob;
+        this.checked = check.get(0);
+        this.inderteminate = check.get(1);
     }
 
     public Long getId() {
@@ -70,5 +93,45 @@ public class FormDemoEntity {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getFood() {
+        return food;
+    }
+
+    public void setFood(String food) {
+        this.food = food;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+    public boolean isInderteminate() {
+        return inderteminate;
+    }
+
+    public void setInderteminate(boolean inderteminate) {
+        this.inderteminate = inderteminate;
     }
 }

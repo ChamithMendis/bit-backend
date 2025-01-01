@@ -1,5 +1,8 @@
 package com.bit.backend.dtos;
 
+import java.util.Date;
+import java.util.List;
+
 public class FormDemoDto {
 
     private Long id;
@@ -7,15 +10,23 @@ public class FormDemoDto {
     private String lastName;
     private String email;
     private int age;
+    private String gender;
+    private String food;
+    private Date dob;
+    private List<Boolean> check;
 
     public FormDemoDto() {}
 
-    public FormDemoDto(Long id, String firstName, String lastName, String email, int age) {
+    public FormDemoDto(Long id, String firstName, String lastName, String email, int age, String gender, String food, Date dob, List check) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.age = age;
+        this.gender = gender;
+        this.food = food;
+        this.dob = dob;
+        this.check = check;
     }
 
     public Long getId() {
@@ -56,5 +67,37 @@ public class FormDemoDto {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getFood() {
+        return food;
+    }
+
+    public void setFood(String food) {
+        this.food = food;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    public List<Boolean> getCheck() {
+        return check;
+    }
+
+    public void setCheck(List<Boolean> check) {
+        this.check = check;
     }
 }
