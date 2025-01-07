@@ -20,16 +20,20 @@ public class FormDemoEntity {
     @Column(name = "age")
     private String age;
 
+    @Column(name = "status")
+    private String status;
+
 
     public FormDemoEntity() {
     }
 
-    public FormDemoEntity(Long id, String firstName, String lastName, String email, String age) {
+    public FormDemoEntity(Long id, String firstName, String lastName, String email, String age, String status) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.age = age;
+        this.status = status;
     }
 
     public Long getId() {
@@ -70,5 +74,13 @@ public class FormDemoEntity {
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

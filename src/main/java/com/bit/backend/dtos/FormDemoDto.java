@@ -7,16 +7,18 @@ public class FormDemoDto {
     private String lastName;
     private String email;
     private int age;
+    private String status;
 
     public FormDemoDto() {
     }
 
-    public FormDemoDto(Long id, String firstName, String lastName, String email, int age) {
+    public FormDemoDto(Long id, String firstName, String lastName, String email, int age, String status) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.age = age;
+        this.status = status;
     }
 
     public Long getId() {
@@ -57,5 +59,13 @@ public class FormDemoDto {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
