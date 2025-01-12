@@ -7,6 +7,8 @@ import com.bit.backend.repositories.FormDemoRepository;
 import com.bit.backend.services.FormDemoServiceI;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FormDemoService implements FormDemoServiceI {
 
@@ -25,5 +27,14 @@ public class FormDemoService implements FormDemoServiceI {
         FormDemoEntity savedItem = formDemoRepository.save(formDemoEntity);
         FormDemoDto savedDto = formDemoMapper.toFormDemoDto(savedItem);
         return savedDto;
+    }
+
+    @Override
+    public List<FormDemoDto> getData() {
+        // db operations and send data
+
+        List<FormDemoEntity> formDemoEntityList = formDemoRepository.findAll();
+        List<FormDemoDto> formDemoDtoList = formDemoMapper.toFormDemoDtoList(formDemoEntityList);
+        return formDemoDtoList;
     }
 }
