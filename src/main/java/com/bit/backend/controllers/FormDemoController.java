@@ -3,10 +3,7 @@ package com.bit.backend.controllers;
 import com.bit.backend.dtos.FormDemoDto;
 import com.bit.backend.services.FormDemoServiceI;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
@@ -32,5 +29,17 @@ public class FormDemoController {
         /* DTO, Entity, Mapper */
         List<FormDemoDto> formDemoDtoList = formDemoServiceI.getData();
         return ResponseEntity.ok(formDemoDtoList);
+    }
+
+    @PutMapping("/form-demo/{id}")
+    public ResponseEntity<FormDemoDto> updateFormDemo(@PathVariable long id, @RequestBody FormDemoDto formDemoDto) {
+        FormDemoDto responseFormDemoDto = formDemoServiceI.updateFormDemo(id, formDemoDto);
+        return ResponseEntity.ok(responseFormDemoDto);
+    }
+
+    @DeleteMapping("/form-demo/{id}")
+    public ResponseEntity<FormDemoDto> deleteFormDemo(@PathVariable long id) {
+        FormDemoDto formDemoDto = formDemoServiceI.deleteFormDemo(id);
+        return ResponseEntity.ok(formDemoDto);
     }
 }
