@@ -45,6 +45,16 @@ public class UserService implements UserServiceI {
     }
 
     @Override
+    public UserDto getUserByLogin(String userName) {
+        User user = userRepository.findByLogin(userName).orElseThrow(() -> new AppException("Unknown User", HttpStatus.NOT_FOUND));
+
+        if (user != null) {
+            return userMapper.toUserDto(user);
+        }
+        throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
     public UserDto register(SignUpDto signUpDto) {
         Optional<User> oUser = userRepository.findByLogin(signUpDto.login());
 

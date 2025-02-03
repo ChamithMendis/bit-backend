@@ -41,7 +41,7 @@ public class UserAuthProvider {
 
     public String createToken(UserDto userDto) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + 3_600_000*24);
+        Date validity = new Date(now.getTime() + 120_000);
 
         return JWT.create()
                 .withIssuer(userDto.getLogin())
@@ -50,6 +50,17 @@ public class UserAuthProvider {
                 .withClaim("firstName", userDto.getFirstName())
                 .withClaim("lastName", userDto.getLastName())
                 .sign(Algorithm.HMAC256(secretKey));
+    }
+
+    public String refreshToken(UserDto userDto, String authHeader) {
+
+        String oldToken = authHeader.split(" ")[1];
+
+        Authentication authentication = this.validateTokenStrongly(oldToken);
+        if (authentication.isAuthenticated()) {
+            return this.createToken(userDto);
+        }
+        return "";
     }
 
     public Authentication validateToken(String token) {

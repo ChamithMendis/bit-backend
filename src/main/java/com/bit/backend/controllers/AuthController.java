@@ -36,6 +36,18 @@ public class AuthController {
         return ResponseEntity.created(URI.create("/users/" + user.getId())).body(user);
     }
 
+    @GetMapping("/refresh-token/{userName}")
+    public ResponseEntity<String> refreshToken(@RequestHeader(value = "Authorization") String authHeader,@PathVariable String userName) {
+        try {
+            UserDto userDto = userServiceI.getUserByLogin(userName);
+            String newToken = userAuthProvider.refreshToken(userDto, authHeader);
+            return ResponseEntity.ok(newToken);
+        } catch (Exception e) {
+            String returnString = "";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(returnString);
+        }
+    }
+
     @GetMapping("/get-auth-ids/{id}")
     public ResponseEntity<List<Integer>> getAuthDetails(@PathVariable long id) {
         try {
