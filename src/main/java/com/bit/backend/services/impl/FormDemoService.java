@@ -25,51 +25,65 @@ public class FormDemoService implements FormDemoServiceI {
 
     @Override
     public FormDemoDto addFormDemoEntity(FormDemoDto formDemoDto) {
-        System.out.println("***********In Backend**************");
-        FormDemoEntity formDemoEntity = formDemoMapper.toFormDemoEntity(formDemoDto);
-        FormDemoEntity savedItem = formDemoRepository.save(formDemoEntity);
-        FormDemoDto savedDto = formDemoMapper.toFormDemoDto(savedItem);
-        return savedDto;
+        try {
+            System.out.println("***********In Backend**************");
+            FormDemoEntity formDemoEntity = formDemoMapper.toFormDemoEntity(formDemoDto);
+            FormDemoEntity savedItem = formDemoRepository.save(formDemoEntity);
+            FormDemoDto savedDto = formDemoMapper.toFormDemoDto(savedItem);
+            return savedDto;
+        } catch (Exception e) {
+            throw new AppException("Request failed with error " + e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
     public List<FormDemoDto> getData() {
         // db operations and send data
-
-        List<FormDemoEntity> formDemoEntityList = formDemoRepository.findAll();
-        List<FormDemoDto> formDemoDtoList = formDemoMapper.toFormDemoDtoList(formDemoEntityList);
-        return formDemoDtoList;
+        try {
+            List<FormDemoEntity> formDemoEntityList = formDemoRepository.findAll();
+            List<FormDemoDto> formDemoDtoList = formDemoMapper.toFormDemoDtoList(formDemoEntityList);
+            return formDemoDtoList;
+        } catch (Exception e) {
+            throw new AppException("Request failed with error " + e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
     public FormDemoDto updateFormDemo(long id, FormDemoDto formDemoDto) {
 
-        Optional<FormDemoEntity> optionalFormDemoEntity = formDemoRepository.findById(id);
+        try {
+            Optional<FormDemoEntity> optionalFormDemoEntity = formDemoRepository.findById(id);
 
-        if (!optionalFormDemoEntity.isPresent()) {
-            throw new AppException("Form Demo Does Not Exists", HttpStatus.BAD_REQUEST);
+            if (!optionalFormDemoEntity.isPresent()) {
+                throw new AppException("Form Demo Does Not Exists", HttpStatus.BAD_REQUEST);
+            }
+
+            FormDemoEntity newFormDemoEntity = formDemoMapper.toFormDemoEntity(formDemoDto);
+            newFormDemoEntity.setId(id);
+
+            FormDemoEntity formDemoEntity = formDemoRepository.save(newFormDemoEntity);
+
+            FormDemoDto responseFormDemoDto = formDemoMapper.toFormDemoDto(formDemoEntity);
+            return responseFormDemoDto;
+        } catch (Exception e) {
+            throw new AppException("Request failed with error " + e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        FormDemoEntity newFormDemoEntity = formDemoMapper.toFormDemoEntity(formDemoDto);
-        newFormDemoEntity.setId(id);
-
-        FormDemoEntity formDemoEntity = formDemoRepository.save(newFormDemoEntity);
-
-        FormDemoDto responseFormDemoDto = formDemoMapper.toFormDemoDto(formDemoEntity);
-        return responseFormDemoDto;
     }
 
     @Override
     public FormDemoDto deleteFormDemo(long id) {
+        try {
+            Optional<FormDemoEntity> optionalFormDemoEntity = formDemoRepository.findById(id);
 
-        Optional<FormDemoEntity> optionalFormDemoEntity = formDemoRepository.findById(id);
+            if (!optionalFormDemoEntity.isPresent()) {
+                throw new AppException("Form Demo Does Not Exists", HttpStatus.BAD_REQUEST);
+            }
 
-        if (!optionalFormDemoEntity.isPresent()) {
-            throw new AppException("Form Demo Does Not Exists", HttpStatus.BAD_REQUEST);
+            formDemoRepository.deleteById(id);
+
+            return formDemoMapper.toFormDemoDto(optionalFormDemoEntity.get());
+        } catch (Exception e) {
+            throw new AppException("Request failed with error " + e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        formDemoRepository.deleteById(id);
-
-        return formDemoMapper.toFormDemoDto(optionalFormDemoEntity.get());
     }
 }
