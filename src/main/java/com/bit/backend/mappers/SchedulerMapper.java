@@ -26,6 +26,7 @@ public interface SchedulerMapper {
             periodDto.setWednesday(schedulerEntity.getWednesday());
             periodDto.setThursday(schedulerEntity.getThursday());
             periodDto.setFriday(schedulerEntity.getFriday());
+            periodDto.setId(schedulerEntity.getId().intValue());
 
             periodDtoList.add(periodDto);
         }
@@ -39,6 +40,7 @@ public interface SchedulerMapper {
 
         for (PeriodDto periodDto: schedulerDto.getRowData()) {
             SchedulerEntity schedulerEntity = new SchedulerEntity();
+            schedulerEntity.setId((long) periodDto.getId());
             schedulerEntity.setEmpNo(empNo);
             schedulerEntity.setPeriodNo(periodDto.getPeriodNo());
             schedulerEntity.setMonday(periodDto.getMonday());
