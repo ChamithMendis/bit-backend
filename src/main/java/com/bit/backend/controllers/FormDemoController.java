@@ -4,8 +4,10 @@ import com.bit.backend.dtos.FormDemoDto;
 import com.bit.backend.exceptions.AppException;
 import com.bit.backend.services.FormDemoServiceI;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 import java.util.List;
@@ -29,9 +31,12 @@ public class FormDemoController {
         }
     }
 
-    @PostMapping("/form-demo")
-    public ResponseEntity<FormDemoDto> addForm(@RequestBody FormDemoDto formDemoDto) {
+    @PostMapping(value = {"/form-demo"}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<FormDemoDto> addForm(@RequestPart("demoForm") FormDemoDto formDemoDto, @RequestPart("image") MultipartFile file) {
         try {
+            formDemoDto.setImage(file.getBytes());
+            formDemoDto.setImageName(file.getOriginalFilename());
+            formDemoDto.setImageType(file.getContentType());
             FormDemoDto formDemoDtoResponse = formDemoServiceI.addFormDemoEntity(formDemoDto);
             return ResponseEntity.created(URI.create("/form-demo"+formDemoDtoResponse.getFirstName())).body(formDemoDtoResponse);
         } catch (Exception e) {
@@ -40,8 +45,11 @@ public class FormDemoController {
     }
 
     @PutMapping("/form-demo/{id}")
-    public ResponseEntity<FormDemoDto> updateFormDemo(@PathVariable long id, @RequestBody FormDemoDto formDemoDto) {
+    public ResponseEntity<FormDemoDto> updateFormDemo(@PathVariable long id, @RequestPart("demoForm") FormDemoDto formDemoDto, @RequestPart("image") MultipartFile file) {
         try {
+            formDemoDto.setImage(file.getBytes());
+            formDemoDto.setImageName(file.getOriginalFilename());
+            formDemoDto.setImageType(file.getContentType());
             FormDemoDto formDemoDtoResponse = formDemoServiceI.updateFormDemoEntity(id, formDemoDto);
             return ResponseEntity.ok(formDemoDtoResponse);
         } catch (Exception e) {

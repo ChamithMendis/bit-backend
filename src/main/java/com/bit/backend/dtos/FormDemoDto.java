@@ -1,5 +1,8 @@
 package com.bit.backend.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class FormDemoDto {
 
     private Long id;
@@ -8,17 +11,27 @@ public class FormDemoDto {
     private String email;
     private int age;
     private String status;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private byte[] image;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String imageName;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String imageType;
 
     public FormDemoDto() {
     }
 
-    public FormDemoDto(Long id, String firstName, String lastName, String email, int age, String status) {
+    public FormDemoDto(Long id, String firstName, String lastName, String email, int age, String status, byte[] image,
+                       String imageName, String imageType) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.age = age;
         this.status = status;
+        this.image = image;
+        this.imageName = imageName;
+        this.imageType = imageType;
     }
 
     public Long getId() {
@@ -67,5 +80,29 @@ public class FormDemoDto {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
     }
 }

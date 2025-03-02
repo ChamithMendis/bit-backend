@@ -23,17 +23,29 @@ public class FormDemoEntity {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "image")
+    private byte[] image;
+
+    @Column(name = "image_name")
+    private String imageName;
+
+    @Column(name = "image_type")
+    private String imageType;
 
     public FormDemoEntity() {
     }
 
-    public FormDemoEntity(Long id, String firstName, String lastName, String email, String age, String status) {
+    public FormDemoEntity(Long id, String firstName, String lastName, String email, String age, String status,
+                          byte[] image, String imageType, String imageName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.age = age;
         this.status = status;
+        this.image = image;
+        this.imageName = imageName;
+        this.imageType = imageType;
     }
 
     public Long getId() {
@@ -82,5 +94,29 @@ public class FormDemoEntity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
     }
 }
