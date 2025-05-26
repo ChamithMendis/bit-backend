@@ -86,4 +86,12 @@ public class FormDemoService implements FormDemoServiceI {
             throw new AppException("Request failed with error " + e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Override
+    public List<FormDemoDto> getAgeGreaterThan18() {
+        // call repository interface to get data
+        List<FormDemoEntity> formDemoEntityList = formDemoRepository.getAgeGreaterThan18();
+        List<FormDemoDto> formDemoDtoList = formDemoMapper.toFormDemoDtoList(formDemoEntityList);
+        return formDemoDtoList;
+    }
 }

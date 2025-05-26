@@ -29,6 +29,14 @@ public class FormDemoController {
         }
     }
 
+    @GetMapping("/form-demo/age-greater-than-18")
+    public ResponseEntity<List<FormDemoDto>> getAgeGreaterThan18() {
+        // interface through service call
+
+        List<FormDemoDto> formDemoDtoList = formDemoServiceI.getAgeGreaterThan18();
+        return ResponseEntity.ok(formDemoDtoList);
+    }
+
     @GetMapping("/form-demo")
     public ResponseEntity<List<FormDemoDto>> getData() {
         /* controller -> service (interface) -> repository */
